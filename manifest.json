@@ -2,7 +2,7 @@
   "id": "tesla",
   "type": "integration",
   "name": "Tesla",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Tesla through the official Fleet API: battery, range, charging state and mileage, read only around charges to stay within the free monthly credit",
   "icon": "Car",
   "repo": "adn-dev-adrien/sowel-plugin-tesla",
@@ -11,29 +11,29 @@
   "settings": [
     {
       "key": "client_id",
-      "label": "Identifiant client Tesla (Client ID)",
+      "label": "Client ID de l'application Tesla (developer.tesla.com)",
       "type": "text",
       "required": true
     },
     {
       "key": "client_secret",
-      "label": "Clé secrète Tesla (Client Secret)",
+      "label": "Client Secret de l'application Tesla",
       "type": "password",
       "required": true
     },
     {
       "key": "domain",
-      "label": "Domaine qui sert la clé publique et Sowel",
+      "label": "Domaine de ton Sowel, celui qui sert la clé publique Tesla",
       "type": "text",
       "required": true,
       "placeholder": "domotique.exemple.fr"
     },
     {
       "key": "charger_equipment_id",
-      "label": "Borne qui déclenche les lectures (identifiant de l'équipement)",
+      "label": "Identifiant de la borne (36 caractères, fin de l'adresse de sa page)",
       "type": "text",
       "required": false,
-      "placeholder": "fin de l'adresse de la page de la borne"
+      "placeholder": "a1b2c3d4-…-…-…-…"
     },
     {
       "key": "monthly_cap",

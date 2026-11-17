@@ -1,6 +1,6 @@
 {
   "name": "sowel-plugin-tesla",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Sowel plugin: a Tesla through the official Fleet API, read-only and on a tight request budget, published as an electric vehicle (core spec 183)",
   "type": "module",
   "main": "dist/index.js",

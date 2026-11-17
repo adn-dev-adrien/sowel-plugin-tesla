@@ -44,6 +44,7 @@ const ALARM = {
   payment: "tesla:payment",
   cap: "tesla:cap",
   credentials: "tesla:credentials",
+  charger: "tesla:charger",
 } as const;
 
 /** Errors a retry cannot fix: a person must act. */
@@ -148,6 +149,19 @@ export class TeslaPlugin implements IntegrationPlugin {
     this.status = "disconnected";
 
     const charger = this.cfg.chargerEquipmentId;
+    if (this.cfg.invalidCharger) {
+      this.raise(
+        ALARM.charger,
+        "warning",
+        "Tesla : l'identifiant de la borne n'est pas valide (36 caractères attendus, la fin de l'adresse de la page de la borne). Lectures limitées à 7 h et 19 h.",
+      );
+      this.logger.warn(
+        { length: this.cfg.invalidCharger.length },
+        "Tesla charger id is not an equipment id",
+      );
+    } else {
+      this.resolve(ALARM.charger, "Tesla : borne reconnue");
+    }
     if (charger) {
       this.trigger = new ChargeTrigger((reason) => this.readAll(reason), this.timers);
       this.unsubscribe = this.deps.eventBus.on((event) => {

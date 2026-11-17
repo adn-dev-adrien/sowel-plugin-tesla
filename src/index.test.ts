@@ -5,7 +5,7 @@ import type { PluginDeps } from "./sowel-api.js";
 import { DURING_MS, SETTLE_MS, type Timers } from "./trigger.js";
 
 const VIN = "LRWTESTVIN0001234";
-const CHARGER = "charger-eq-1";
+const CHARGER = "a089f986-0000-4000-8000-0000000000aa";
 
 const LIVE = {
   charge_state: {
@@ -238,6 +238,20 @@ describe("TeslaPlugin", () => {
     await flush();
     expect(h.settings.get("integration.tesla.refresh_token")).toMatch(/^rt-/);
     expect(h.devices).toEqual(["Tesla 1234"]);
+  });
+
+  it("warns about a charger field that is not an equipment id, and reads daily only", async () => {
+    const h = setup({ "integration.tesla.charger_equipment_id": "domotique.example.org" });
+    await h.plugin.start();
+    await flush();
+    expect(
+      h.events.some((e) => e.type === "system.alarm.raised" && e.alarmId === "tesla:charger"),
+    ).toBe(true);
+    const base = h.apiCalls().length;
+    await vi.advanceTimersByTimeAsync(DURING_MS);
+    h.power(3000);
+    await vi.advanceTimersByTimeAsync(SETTLE_MS * 2);
+    expect(h.apiCalls().length).toBe(base);
   });
 
   it("refuses a callback that no Connect click armed", async () => {
